@@ -1,0 +1,20 @@
+.karte-section h4 {
+	margin: 1em 0 0;
+	text-align: center;
+	font-size: 1.6em;
+	font-weight: bold;
+}
+
+.karte-slider img {
+	width: 100px;
+	height: 100px;
+	margin: 2em auto;
+}
+
+.karte-slider div.hero-product-title {
+	padding: 0 1em;	
+}
+
+.grid--full.medium-down--show.large--show {
+	margin-bottom: 1em;
+}

@@ -4,9 +4,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import csv
 import pandas as pd
+from selenium.common.exceptions import NoSuchElementException
 
-filePath = r'/Users/motoki/Documents/Decathlon/RPA/items.csv'
-downloadPath = r'/Users/motoki/Documents/Decathlon/RPA/url_list_with_itemCode.csv'
+filePath = r'/Users/motoki/Documents/Shopify/Github Public/get-url-from-item-code/items.csv'
+downloadPath = r'/Users/motoki/Documents/Shopify/Github Public/get-url-from-item-code/url_list_with_itemCode.csv'
 
 colName = ['item_code']
 df = pd.read_csv(filePath, names=colName)
@@ -14,7 +15,7 @@ itemList = []
 
 driver = webdriver.Chrome()
 driver.get("https://www.decathlon.co.jp/")
-driver.implicitly_wait(30)
+driver.implicitly_wait(5)
 
 with open(filePath) as csvfile:
     items = csv.reader(csvfile)
@@ -24,9 +25,13 @@ with open(filePath) as csvfile:
         searchBox.clear()
         searchBox.send_keys(item, Keys.ENTER)
 
-        productElm = driver.find_element(
-            By.CSS_SELECTOR, 'ul.snize-search-results-content > li > a')
-        productUrl = productElm.get_attribute('href')
+        try:
+            productElm = driver.find_element(
+                By.CSS_SELECTOR, 'ul.snize-search-results-content > li > a')
+            productUrl = productElm.get_attribute('href')
+        except NoSuchElementException:
+            productUrl = 'No URL'
+
         itemList.append(productUrl)
 
 df['URL'] = itemList
